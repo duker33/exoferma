@@ -1,2 +1,2 @@
-# exo-ferma
+# exoferma
 Tool to publish XI texts

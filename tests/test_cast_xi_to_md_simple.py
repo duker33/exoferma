@@ -24,8 +24,8 @@ def test_line_is_heading() -> bool:
     assert not f('Not Heading too.')
     assert not f('')
 
-def test_line_is_note() -> bool:
-    f = cs.line_is_note
+def test_line_is_sentence() -> bool:
+    f = cs.line_is_sentence
     assert f('. Note')
     assert f('  . Note')
     assert f('. . Note')
@@ -54,8 +54,8 @@ def test_cast_heading() -> str:
     with pytest.raises(AssertionError):
         f('. One .')
 
-def test_cast_note() -> str:
-    f = cs.cast_note
+def test_cast_sentence() -> str:
+    f = cs.cast_sentence
     assert f('. One') == '- One'
     with pytest.raises(AssertionError):
         f('One')

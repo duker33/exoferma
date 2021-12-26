@@ -9,22 +9,36 @@ from parsimonious.grammar import Grammar
 # """
 # )
 
+# grammar = Grammar(
+# r"""
+# xi_node = (xi_node / line / emptyline)*
+# line = some_space ". " ~".*" eol
+# eol = ~"\n"
+# some_space = ~"\s*"
+# emptyline = ~"some_space+"
+# """
+# )
+
 grammar = Grammar(
 r"""
-xi_node = (xi_node / line / emptyline)*
-line = some_space ". " ~".*" eol
+note = (paragraph / emptyline)+
+paragraph = (line / line_last)+
+
+line_last = ". " ~".*"
+line = line_last eol
 eol = ~"\n"
+
+emptyline = (some_space / eol)*
 some_space = ~"\s*"
-emptyline = ~"some_space+"
 """
 )
 
-def text():
-    with open('morpher_from.xi') as f:
+def fetch_text():
+    with open('tests/assets/common_from.xi') as f:
         return f.read()
 
 def main():
-    return grammar.parse(text())
+    return grammar.parse(fetch_text())
 
 
 if __name__ == '__main__':

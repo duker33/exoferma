@@ -5,6 +5,7 @@ from parsimonious.nodes import Node
 from exoferma.nodes import ExoNode
 from exoferma.parser import parse
 
+
 # Have test here, because line is the most primitive abstraction
 def test_empty_file():
     f = 'tests/assets/empty.xi'
@@ -15,17 +16,12 @@ def test_empty_file():
 def test_common_line():
     f = 'tests/assets/line_common.xi'
     note = parse(f)
-    assert ExoNode(note).has_expr('line_last')
-    assert 1 == ExoNode(note).count_expr('emptyline')
+    assert ExoNode(note).has_expr('line_body')
+    assert not ExoNode(note).has_expr('line_empty')
 
-def test_empty_line():
+
+def test_line_end():
     f = 'tests/assets/line_empty.xi'
-    note = parse(f)
-    assert ExoNode(note).has_expr('emptyline')
-    assert 1 == ExoNode(note).count_expr('emptyline')
-
-def test_nested_lines():
-    f = 'tests/assets/line_nested.xi'
-    note = parse(f)
-    # assert ExoNode(note).has_expr('emptyline')
-    # assert 1 == ExoNode(note).count_expr('emptyline')
+    note = ExoNode(parse(f))
+    assert note.has_expr('line_end')
+    assert 1 == note.count_expr('line_end')

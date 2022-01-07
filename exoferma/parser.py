@@ -5,15 +5,18 @@ from parsimonious.nodes import Node
 
 grammar = Grammar(
 r"""
-note = (paragraph / emptyline)+
-paragraph = (line / line_last)+
+note = (paragraph / line_empty / emptyness)+
+paragraph = (line / line_body)+
 
-line_last = ". " ~".*"
-line = line_last eol
-eol = ~"\n"
+line_indent = "  "
+line_head = ". "
+line_end = ~"\n"
+line_content = ~".*"
+line_empty = line_indent* line_end
+line_body = line_indent* line_head line_content
+line = line_body line_end
 
-emptyline = (some_space / eol)*
-some_space = ~"\s*"
+emptyness = ""
 """
 )
 

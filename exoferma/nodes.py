@@ -24,3 +24,6 @@ class ExoNode:
             [self]
             + list(chain(*[ExoNode(n).flatten() for n in self.node.children]))
         )
+
+    def flatten_exprs(self) -> t.List[str]:
+        return [en.node.expr_name for en in self.flatten()]

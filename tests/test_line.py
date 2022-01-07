@@ -23,3 +23,9 @@ def test_empty_line():
     note = parse(f)
     assert ExoNode(note).has_expr('emptyline')
     assert 1 == ExoNode(note).count_expr('emptyline')
+
+def test_nested_lines():
+    f = 'tests/assets/line_nested.xi'
+    note = parse(f)
+    # assert ExoNode(note).has_expr('emptyline')
+    # assert 1 == ExoNode(note).count_expr('emptyline')

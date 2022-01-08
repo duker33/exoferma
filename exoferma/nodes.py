@@ -37,15 +37,20 @@ class ExoNode:
             + list(chain(*[ExoNode(n).flatten() for n in self.node.children]))
         )
 
+    @property
+    def children(self):
+        return [ExoNode(n) for n in self.node.children]
+
     def flatten_exprs(self) -> t.List[str]:
         return [en.node.expr_name for en in self.flatten()]
 
-    def find(
-        self, expr_name: str, *, recursive=True, content=None
-    ) -> t.Union['ExoNode', None]:
+    def find(self, expr_name: str) -> t.Union['ExoNode', None]:
         """Find in parser tree."""
-        assert content is None  # not implemented yet
         return next(
             (n for n in self.flatten() if n.node.expr_name == expr_name),
             None
         )
+
+    def find_all(self, expr_name: str) -> t.List['ExoNode']:
+        """Find all in parser tree."""
+        return [n for n in self.flatten() if n.node.expr_name == expr_name]

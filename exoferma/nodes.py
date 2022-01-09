@@ -1,5 +1,6 @@
 import typing as t
 from attrs import define, field
+from collections import namedtuple
 from itertools import chain
 
 from parsimonious.nodes import Node
@@ -54,3 +55,14 @@ class ExoNode:
     def find_all(self, expr_name: str) -> t.List['ExoNode']:
         """Find all in parser tree."""
         return [n for n in self.flatten() if n.node.expr_name == expr_name]
+
+    def _exo_leveled_lines(self) -> t.Union[t.List['ExoNode'], None]:
+        if self.node.expr_name != 'paragraph':
+            return
+        ExoLine = namedtuple('ExoLine', ['level', 'content'])
+        return [
+            ExoLine(
+                level=len(exo_line.find_all('line_indent')),
+                content=exo_line.find('line_content')
+            ) for exo_line in self.find_all('line')
+        ]

@@ -2,7 +2,7 @@ import pytest
 
 from parsimonious.nodes import Node
 
-from exoferma.nodes import ExoNode
+from exoferma.node import ExoNode
 from exoferma.parser import parse
 
 

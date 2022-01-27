@@ -39,20 +39,27 @@ def test_exo_leveled_lines_common():
     note = parse('tests/assets/node_simple.xi')
     xi_lines = ExoNode(note).find('paragraph')._exo_leveled_lines()
     first, second, third = xi_lines
-    assert (0, 'one') == (first.level, first.content.node.text)
-    assert (1, 'two') == (second.level, second.content.node.text)
-    assert (1, 'three') == (third.level, third.content.node.text)
+    assert (0, '. one\n') == (first.level, first.exo_node.node.text)
+    assert (1, '  . two\n') == (second.level, second.exo_node.node.text)
+    assert (1, '  . three\n') == (third.level, third.exo_node.node.text)
+    # .
+    assert (0, 'one') == (
+        first.level,
+        first.exo_node.find('line_body').find('line_content').node.text
+    )
 
 
 def test_exo_leveled_lines_much_nesting():
+    def content(xi_line):
+        return xi_line.exo_node.find('line_body').find('line_content').node.text
     note = parse('tests/assets/node_much_nesting.xi')
     xi_lines = ExoNode(note).find('paragraph')._exo_leveled_lines()
     first, second, third, fourth, fifth = xi_lines
-    assert (0, 'one') == (first.level, first.content.node.text)
-    assert (1, 'two') == (second.level, second.content.node.text)
-    assert (2, 'three') == (third.level, third.content.node.text)
-    assert (2, 'four') == (fourth.level, fourth.content.node.text)
-    assert (0, 'five') == (fifth.level, fifth.content.node.text)
+    assert (0, 'one') == (first.level, content(first))
+    assert (1, 'two') == (second.level, content(second))
+    assert (2, 'three') == (third.level, content(third))
+    assert (2, 'four') == (fourth.level, content(fourth))
+    assert (0, 'five') == (fifth.level, content(fifth))
 
 
 def test_exo_leveled_lines_not_paragraph():

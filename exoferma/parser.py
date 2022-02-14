@@ -1,5 +1,7 @@
 import typing as t
 
+from exoferma.node import ExoNode
+
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import Node
 
@@ -20,10 +22,14 @@ emptyness = ""
 """
 )
 
-def fetch_text():
-    with open('tests/assets/common_from.xi') as f:
-        return f.read()
+def normalize(text: str) -> str:
+    return text.strip() + '\n'
 
-def parse(filename: str) -> Node:
+
+def parse(text: str) -> ExoNode:
+    return ExoNode(node=grammar.parse(normalize(text)))
+
+
+def parse_file(filename: str) -> Node:
     with open(filename) as f:
-        return grammar.parse(f.read())
+        return parse(text=f.read())
